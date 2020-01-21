@@ -1,7 +1,7 @@
 #airgeddon Dockerfile
 
 #Base image
-FROM kalilinux/kali-linux-docker:latest
+FROM parrotsec/parrot:latest
 
 #Credits & Data
 LABEL \
@@ -13,7 +13,11 @@ LABEL \
 #Env vars
 ENV AIRGEDDON_URL="https://github.com/v1s1t0r1sh3r3/airgeddon.git"
 ENV HASHCAT2_URL="https://github.com/v1s1t0r1sh3r3/hashcat2.0.git"
+ENV BETTERCAP162_URL="https://github.com/v1s1t0r1sh3r3/bettercap1.6.2.git"
 ENV DEBIAN_FRONTEND="noninteractive"
+
+#Update repo sources
+RUN sed -i 's|parrot.sh|parrot.sh/mirrors|' /etc/apt/sources.list.d/parrot.list
 
 #Update system
 RUN apt update
@@ -37,17 +41,17 @@ ENV LC_ALL="en_US.UTF-8"
 RUN \
 	apt -y install \
 	gawk \
-	net-tools \
-	wireless-tools \
 	iw \
 	aircrack-ng \
-	xterm
+	xterm \
+	iproute2 \
+	pciutils \
+	procps
 
 #Install airgeddon internal tools
 RUN \
 	apt -y install \
 	ethtool \
-	pciutils \
 	usbutils \
 	rfkill \
 	x11-utils \
@@ -67,9 +71,11 @@ RUN \
 	crunch \
 	hashcat \
 	mdk3 \
+	mdk4 \
 	hostapd \
 	lighttpd \
 	iptables \
+	nftables \
 	ettercap-text-only \
 	sslstrip \
 	isc-dhcp-server \
@@ -77,13 +83,22 @@ RUN \
 	reaver \
 	bully \
 	pixiewps \
-	expect
+	hostapd-wpe \
+	asleap \
+	john \
+	openssl
 
-#Install needed Ruby gems
+#Install needed dependencies for Bettercap and BeEF
 RUN \
 	apt -y install \
 	beef-xss \
-	bettercap
+	bettercap \
+	ruby-packetfu \
+	ruby-colorize \
+	ruby-net-dns \
+	ruby-em-proxy \
+	ruby-network-interface \
+	net-tools
 
 #Env var for display
 ENV DISPLAY=":0"
@@ -108,7 +123,10 @@ COPY . /opt/airgeddon
 #RUN git clone -b ${BRANCH} ${AIRGEDDON_URL}
 
 #Remove auto update
-RUN sed -i 's|auto_update=1|auto_update=0|' airgeddon/airgeddon.sh
+RUN sed -i 's|AIRGEDDON_AUTO_UPDATE=true|AIRGEDDON_AUTO_UPDATE=false|' airgeddon/.airgeddonrc
+
+#Force use of iptables
+RUN sed -i 's|AIRGEDDON_FORCE_IPTABLES=false|AIRGEDDON_FORCE_IPTABLES=true|' airgeddon/.airgeddonrc
 
 #Make bash script files executable
 RUN chmod +x airgeddon/*.sh
@@ -119,13 +137,18 @@ RUN \
 	cp /opt/hashcat2.0/hashcat /usr/bin/ && \
 	chmod +x /usr/bin/hashcat
 
+#Downgrade Bettercap
+RUN \
+	git clone ${BETTERCAP162_URL} && \
+	dpkg -i /opt/bettercap1.6.2/bettercap_1.6.2-0parrot1_all.deb
+
 #Clean packages
 RUN \
 	apt clean && \
 	apt autoclean && \
-	apt autoremove
+	apt autoremove -y
 
-#Clean files
+#Clean and remove useless files
 RUN rm -rf /opt/airgeddon/imgs > /dev/null 2>&1 && \
 	rm -rf /opt/airgeddon/.github > /dev/null 2>&1 && \
 	rm -rf /opt/airgeddon/.editorconfig > /dev/null 2>&1 && \
@@ -135,11 +158,16 @@ RUN rm -rf /opt/airgeddon/imgs > /dev/null 2>&1 && \
 	rm -rf /opt/airgeddon/Dockerfile > /dev/null 2>&1 && \
 	rm -rf /opt/airgeddon/binaries > /dev/null 2>&1 && \
 	rm -rf /opt/hashcat2.0 > /dev/null 2>&1 && \
+	rm -rf /opt/bettercap1.6.2 > /dev/null 2>&1 && \
+	rm -rf /opt/airgeddon/plugins/* > /dev/null 2>&1 && \
 	rm -rf /tmp/* > /dev/null 2>&1 && \
 	rm -rf /var/lib/apt/lists/* > /dev/null 2>&1
 
 #Expose BeEF control panel port
 EXPOSE 3000
+
+#Create volume for plugins
+VOLUME /opt/airgeddon/plugins
 
 #Start command (launching airgeddon)
 CMD ["/bin/bash", "-c", "/opt/airgeddon/airgeddon.sh"]

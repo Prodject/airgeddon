@@ -1,3 +1,104 @@
+### 10.01
+ - Removed deprecated ifconfig and iwconfig commands and dependencies
+ - Fixed error on enterprise certificates validation
+ - Added autoselection for secondary interface if only one existing
+ - Airmon compatibility check system refactored
+ - Fixed error in default paths trophy files for ettercap/bettercap
+
+### 10.0
+ - Added plugins system
+ - Added example plugin: Missing dependencies auto-installation for some distros (Kali, Parrot, BlackArch)
+ - Improvements for Evil Twin on captive portal detection for newer devices
+ - Missing 5GHz channels added
+ - Github pull request template added and issue templates updated
+ - Fixed error on hex2ascii conversion for some WEP passwords
+
+### 9.23
+ - Fixed error printing hints
+ - Fixed problem with default values on options file creation
+
+### 9.22
+ - Improved certificates validations and error messages
+ - Removed useless internet access DNS resolution method for captive portal Evil Twin, now pure dnsspoof
+ - Fixed exit on tmux launch if tmux not installed
+ - Added more charset combinations for hashcat bruteforce attacks
+ - Fixed length problem on hashcat bruteforce decryption attacks
+ - Fixed handshake capture menu error
+ - Compatibility extended to Pentoo Linux
+ - Removed unneeded expect (unbuffer) dependency
+ - Added tab autocompletion for every path input
+
+### 9.21
+ - Fixed non-closing windows on some DoS pursuit mode attacks
+ - Added retrocompatibility for mdk3, added option in .airgeddonrc file to handle it
+ - Fixed bug on WEP all-in-one attack (Fake Auth) for SSIDs containing spaces
+ - Fixed repeated enterprise plain passwords captured on trophy files
+ - Added custom certificates creation for enterprise attacks
+ - Fixed error on BeEF attack using tmux
+
+### 9.20
+ - Added option to use tmux instead of xterm (Thank you to "xpz3")
+ - Added WPS null PIN attack (reaver)
+
+### 9.11
+ - Fixed error shown on enterprise attacks for some wifi cards
+ - Fixed BeEF error due forced config file changes on BeEF 0.4.7.1 and 0.4.7.2 versions
+ - Added ipv6 support for BeEF
+ - Options .airgeddonrc file now also updated on automatic update keeping user's preferences
+
+### 9.10
+ - Mdk3 replaced by Mdk4
+ - Fixed some minor bugs on enterprise plain text captured password process
+ - Fixed minor bug forcing interface mode change after smooth enterprise attack
+ - Tested compatibility with Wifislax 64-2.x and Kali 2019.x
+ - Fixed dependency problem to avoid use of xxd
+ - Routing rules adapted to work with nftables
+
+### 9.01
+ - Improvments on options environment var system
+ - Minor fixes for ARM devices
+ - Fixed iptables (nf_tables) problem
+
+### 9.0
+ - New WPA/WPA2 enterprise attacks menu
+ - New WPA/WPA2 enterprise offline decryption menu
+ - Compatibility extended to Linux Mint 18.x
+ - Flag system for options based on fallback substitution variables (config file, command line and menus)
+ - Fixed error on hashcat bruteforce decryption attacks regarding length
+
+### 8.12
+ - Fixed error on WPS attacks for strange chars in some SSIDs
+ - Tested compatibility with Kali 2018.3/4, Fedora 28, Backbox 5.x and BlackArch 2018.06.01
+ - Added prompt symbol for every user interaction
+ - Improved regex for BSSID check
+ - Changes on contributing policies
+ - Github pull request template added and issue templates updated
+ - Added Wayland graphic system support (Thank you to "fr0xk")
+ - Fixed print error on flying saucer intro for some terminals
+
+### 8.11
+ - Turkish language translation added (Thank you to "UN5T48L3")
+ - Extended cards compatibility. Now airmon non compatible cards can be used
+ - Fixed error on captive portal for some SSID strange chars
+ - Fixed error showing SSIDs containing spaces on WPS network selection menu
+ - Fixed error on chipset detection for some cards
+
+### 8.10
+ - WPS decrypted networks now have trophy file
+ - Tested compatibility with Kali 2018.2, Ubuntu 18.04 and Parrot 4.x
+ - Controlled error for unsupported bettercap 2.x version
+ - Automatic check added on Handshake capture (Thank you to "IwraStudios")
+ - Fixed card detection bug on some Linux
+
+### 8.01
+ - German language translation added (Thank you to "hamperfait")
+ - Filters enabled on scannings based on menu or kind of attack
+ - WPS PIN database now is updated on startup updates too
+ - Return option now always at position 0 on all menus
+ - Removed --weak--hash-threshold option for hashcat 4.0.0 or higher
+ - Tested compatibility with Parrot 3.11
+ - Fixed aspect of network selection menu when network power is equal to -1
+
 ### 8.0
  - Added 5Ghz full support (scans, attacks, card detection, etc.)
  - Tested compatibility with Kali 2018.1, BlackArch 2017.12.11, Fedora 27, Gentoo 20180206, OpenSUSE 42.3 and Parrot 3.10
@@ -85,7 +186,7 @@
  - Spoofed MAC addresses restored on exit
 
 ### 6.1
- - Network selection menues now colorized
+ - Network selection menus now colorized
  - Language strings now in a separated file for easy handling and translating
  - Validation and self-downloading system for new language strings file
 
@@ -157,7 +258,7 @@
 
 ### 4.31
  - Now optionally on Evil Twin captive portal attack you can choose between to have internet access or to use a "dns trick"
- - Fixed bug writing handshake files on some paths
+ - Fixed bug writing Handshake files on some paths
  - Added possibility to get back to Evil Twin main menu from the internet interface selection menu
 
 ### 4.3
@@ -283,7 +384,7 @@
  - README.md beautified
 
 ### 3.22
- - Cleaning handshake files now perform some checks to avoid corruption file problem
+ - Cleaning Handshake files now perform some checks to avoid corruption file problem
  - Capture files are checked before cracking looking for Handshakes and easy targeting
  - Fixed bug checking existence of files
 
